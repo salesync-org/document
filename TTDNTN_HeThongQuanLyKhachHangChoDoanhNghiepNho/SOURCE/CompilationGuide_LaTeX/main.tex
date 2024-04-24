@@ -1,0 +1,36 @@
+\documentclass[oneside,a4paper,14pt]{extreport}
+\input{./settings.tex}
+
+\begin{document}
+\input{Title/title}
+\pagenumbering{roman}
+
+\addcontentsline{toc}{chapter}{Mục lục}
+\tableofcontents
+\pagebreak
+\listoffigures
+\pagebreak
+% \listoftables
+% \pagebreak
+\addcontentsline{toc}{chapter}{Tóm tắt}
+\include{0.Appendix/summary}
+
+\clearpage
+
+\pagenumbering{arabic}
+
+\include{1.Prerequisites/prerequisites}
+\include{2.ServiceCompiling/service_compiling}
+\include{3.FrontendBuilding/frontend_building}
+\include{4.FinalOutputs/final_outputs}
+
+% \addcontentsline{toc}{chapter}{Tài liệu tham khảo}
+% \printbibheading[title={Tài liệu tham khảo}]
+
+\printbibliography[heading=subbibliography, title={Tiếng Việt}, keyword=Viet, resetnumbers=true]
+
+\DeclareNameAlias{sortname}{last-first}
+\DeclareNameAlias{default}{last-first}
+
+\printbibliography[heading=subbibliography, title={Tiếng Anh}, notkeyword=Viet, resetnumbers=4] 
+\end{document} 

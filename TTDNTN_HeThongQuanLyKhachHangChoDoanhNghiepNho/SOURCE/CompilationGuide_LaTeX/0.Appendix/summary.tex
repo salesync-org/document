@@ -1,0 +1,15 @@
+\chapter*{Tóm tắt}
+\label{summary}
+Tài liệu này được ra đời với mục đích hướng dẫn người đọc cách biên dịch toàn bộ mã nguồn của đề tài Thực tập dự án tốt nghiệp "Hệ thống quản lý khách hàng cho doanh nghiệp nhỏ".
+Đề tài được thực hiện theo kiến trúc Microservice, bao gồm những thành phần cốt lõi, có thể biên dịch độc lập sau đây:
+\begin{enumerate}
+    \item Service \texttt{authenticaion} (Java Spring Boot): Dùng để tương tác với máy chủ KeyCloak, giúp xác thực, quản lý thông tin người dùng, doanh nghiệp.
+    \item Service \texttt{type-service} (Java Spring Boot): Giúp quản lý, khởi tạo, xây dựng và cấu hình cấu trúc các đối tượng dữ liệu cho công ty.
+    \item Service \textbf{record-service} (Java Spring Boot): Lưu trữ thông tin chi tiết các bản ghi của những đối tượng dữ liệu đã cấu hình.
+    \item Service \texttt{notification-service} (Java Spring Boot): Tiếp nhận và trao đổi thông báo giữa các service đến phía người dùng.
+    \item Service \texttt{service-registry} (Java Spring Boot): Cổng đăng kí các server khả dụng cho từng service.
+    \item Service \texttt{api-gateway} (Java Spring Boot): Cổng giao tiếp giữa client và các service khả dụng.
+    \item Ứng dụng \texttt{front-end} (Vite, React, TypeScript, TailwindCSS): Ứng dụng giao tiếp với người dùng cuối.
+\end{enumerate}
+
+Tất cả nội dung và sản phẩm thực hiện đồ án kể trên đều được đi kèm trong file \texttt{SourceCode.zip}. Tài liệu sẽ bao gồm hướng dẫn biên dịch cho các service kể trên trong các hệ điều hành \textbf{Windows}, \textbf{MacOS}.

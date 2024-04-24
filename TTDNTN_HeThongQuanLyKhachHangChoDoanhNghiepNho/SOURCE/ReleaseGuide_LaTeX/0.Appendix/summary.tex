@@ -1,0 +1,19 @@
+\chapter*{Tóm tắt}
+\label{summary}
+Tài liệu này được ra đời với mục đích hướng dẫn người đọc cách triển khai các kết quả biên dịch của đề tài Thực tập dự án tốt nghiệp "Hệ thống quản lý khách hàng cho doanh nghiệp nhỏ" lên một hệ thống quản lý các phiên bản release (GitHub, Docker Hub hoặc AWS ECR).
+
+Đề tài được thực hiện theo kiến trúc microservice, do đó tất cả service hoàn toàn có thể được triển khai độc lập. Sau khi kết thúc quá trình biên dịch như được hướng dẫn ở file  \texttt{CompilationGuide.pdf} , ta cần tiến hành đưa những sản phẩm sau đây lên một trong những hệ thống quản lý phiên bản đã kể trên.
+\begin{enumerate}
+    \item File JAR của các service dưới đây, mỗi file đều nằm trong thư mục con \texttt{salesync/back-end/service-tương-ứng/artifacts}.
+    \begin{enumerate}
+        \item \texttt{authentication}
+        \item \texttt{type-service}
+        \item \texttt{record-service}
+        \item \texttt{service-registry}
+        \item \texttt{api-gateway}
+        \item \texttt{notification}
+    \end{enumerate}
+    \item Thư mục \texttt{dist} chứa mã nguồn \texttt{HTML5} hoặc toàn bộ nội dung thư mục \texttt{salesync/front-end}.
+\end{enumerate}
+
+Tất cả nội dung và sản phẩm thực hiện đồ án kể trên đều được đi kèm trong file \texttt{SourceCode.zip}. Tài liệu sẽ bao gồm hướng dẫn release cho các service kể trên trong các hệ điều hành \textbf{Windows}, \textbf{MacOS}.

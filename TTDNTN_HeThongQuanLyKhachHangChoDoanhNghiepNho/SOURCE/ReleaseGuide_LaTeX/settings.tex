@@ -1,0 +1,124 @@
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+% \usepackage{mlmodern}
+\usepackage{mathptmx}
+\DeclareTextSymbolDefault{\DH}{T1}
+
+\usepackage[
+	sorting=nty,
+	backend=bibtex,
+	defernumbers=true]{biblatex}
+\usepackage[unicode]{hyperref}
+\addbibresource{References/references.bib}
+
+\makeatletter
+\def\blx@maxline{77}
+\makeatother
+
+\usepackage{graphicx}
+\graphicspath{ {Images/} }
+
+\usepackage{caption}
+\usepackage{listings}
+\renewcommand\labelitemi{--}
+\usepackage{color}
+\usepackage{chngcntr}
+\counterwithin{figure}{section}
+\counterwithin{figure}{subsection}
+% \counterwithin{figure}{subsubsection}
+\counterwithin{table}{section}
+\counterwithin{table}{subsection}
+% \counterwithin{table}{subsubsection}
+\captionsetup{justification=centering}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
+
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{longtable}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\usepackage{tocloft}
+\renewcommand{\chaptername}{Chương}
+\renewcommand{\cftchappresnum}{\chaptername\ }
+\renewcommand{\cftchapaftersnum}{.}
+\renewcommand{\cftsecaftersnum}{.}
+\renewcommand{\cftsubsecaftersnum}{.}
+\renewcommand{\cftsubsubsecaftersnum}{.}
+\renewcommand{\cfttabaftersnum}{. }
+\setlength{\cftfignumwidth}{2.4cm}
+\setlength{\cftchapnumwidth}{2.6cm}
+\setlength{\cfttabnumwidth}{2.4cm}
+\renewcommand{\figurename}{Hình}
+\renewcommand{\tablename}{Bảng}
+\renewcommand{\contentsname}{Mục lục}
+\renewcommand{\listfigurename}{Danh sách hình}
+\renewcommand{\listtablename}{Danh sách bảng}
+\renewcommand{\appendixname}{Phụ lục}
+
+\linespread{1.5}
+
+\usepackage{indentfirst}
+
+\usepackage{titlesec}
+\titleformat{\section}{\normalsize\bfseries}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.5em}{}
+
+\usepackage[
+  top=30mm,
+  bottom=35mm,
+  left=35mm,
+  right=20mm,
+  includefoot]{geometry}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\newcommand\HRule{\rule{\textwidth}{1pt}}
+
+\newcommand{\tenSV}{
+    Vân~Duy~Quang~\\ Lê~Thái~Như~Quỳnh~\\ Lê~Trần~Thiện~Thắng~\\ Trần~Minh~Toàn~\\ Võ~Duy~Trường~\\ Nguyễn~Lê~Công~Quý}
+
+\newcommand{\tenmssv}{
+    Vân~Duy~Quang~--~20120172\\
+    Lê~Thái~Như~Quỳnh~--~20120175\\
+    Lê~Trần~Thiện~Thắng~--~20120188\\
+    Trần~Minh~Toàn~--~20120215\\
+    Võ~Duy~Trường~--~20120232\\
+    Nguyễn~Lê~Công~Quý~--~20120563
+}
+
+\newcommand{\tenKL}{
+    HỆ~THỐNG QUẢN~LÝ~KHÁCH~HÀNG \\CHO DOANH~NGHIỆP~NHỎ
+}
+
+\newcommand{\tenGVHD}{Ngô~Huy~Biên}

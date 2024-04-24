@@ -1,0 +1,32 @@
+\chapter{Triển khai AWS S3 và API liên quan đến storage}
+\label{Chapter4}
+Trước khi triển khai front-end, ta cần xây dựng service \texttt{AWS S3} (hoặc tương tự) để lưu trữ các file ảnh của trang web và của người dùng.\\
+Sau đó, ta xây dựng một AWS API Gateway để thực hiện lệnh upload ảnh đến \texttt{AWS S3}.
+
+\section{Cây tài nguyên AWS S3}
+Xây dựng và tổ chức thư mục tài nguyên của \texttt{AWS S3} như sau:
+\begin{enumerate}
+    \item salesync
+    \begin{enumerate}
+        \item \texttt{avatars}: Chứa toàn bộ avatar (sau khi đã processed) của người dùng.
+        \item \texttt{copmanies}: Chứa toàn bộ tài nguyên hình ảnh của tất cả doanh nghiệp.
+        \item \texttt{preproccessed\_avatars}: Nơi lưu trữ những avatars do người dùng upload, chưa được processed.
+        \item \texttt{system}: Những hình ẩnh mà ứng dụng cần sử dụng            
+    \end{enumerate}
+\end{enumerate}
+
+\textbf{\textit{Chú ý:}} Tài nguyên này nên được đặt ở chế độ \textbf{Public}.
+\section{Tạo hàm Lambda để process avatar}
+Mỗi khi người dùng upload avatar, ta cần kích hoạt hàm lambda để xử lý ảnh sang nhiều kích thước khác nhau, sau đó lưu vào thư mục \texttt{avatars}.
+Chi tiết về cách thiết lập quyền cho hàm lambda có thể được xem qua ở \href{https://www.geeksforgeeks.org/serverless-image-processing-with-aws-lambda-and-s3/}{đây}.
+
+\section{Xây dựng API Gateway cho Storage}
+Dựa vào hướng dẫn tại \href{https://aws.amazon.com/blogs/compute/patterns-for-building-an-api-to-upload-files-to-amazon-s3/}{đây}. Ta xây dựng một API Gateway resource có 2 API dành riêng cho việc upload 
+avatars vào thư mục \texttt{preproccessed\_avatars} cũng như vào thư mục \texttt{companies}.
+
+\section{Kết quả}
+Sau khi đã cài đặt thành công, ta có tổng cộng $3$ api, $1$ để đọc tài nguyên \texttt{AWS S3}, $2$ để ghi vào các thư mục con.
+
+
+
+

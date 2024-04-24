@@ -4,10 +4,13 @@
 \section{Tạo tài khoản và đăng nhập AWS/GCP}
 \subsection{AWS -- Amazon Web Services}
 \begin{enumerate}
-\item Truy cập vào liên kết \texttt{https://portal.aws.amazon.com/billing/signup?} để đến trang đăng kí tài khoản của AWS.
+\item Truy cập vào liên kết \\
+\texttt{https://portal.aws.amazon.com/billing/signup?}\\
+để đến trang đăng kí tài khoản của AWS.
 Thực hiện theo hướng dẫn của trang web để tạo tài khoản.
 
-\item Đăng nhập vào tài khoản AWS đã tạo tại \texttt{https://console.aws.amazon.com/console/home}.
+\item Đăng nhập vào tài khoản AWS đã tạo tại \\
+\texttt{https://console.aws.amazon.com/console/home}.
 \end{enumerate}
 
 \subsection{GCP -- Google Cloud Platform}
@@ -15,19 +18,20 @@ Thực hiện theo hướng dẫn của trang web để tạo tài khoản.
 \item Truy cập vào liên kết \texttt{https://cloud.google.com/} để đến trang chính thức của GCP.
 \item Chọn \texttt{Get started for free} để tạo tài khoản mới.
 \item Điền thông tin cần thiết và thực hiện theo hướng dẫn của trang web để tạo tài khoản.
-\item Đăng nhập vào tài khoản GCP đã tạo tại \texttt{https://console.cloud.google.com/}.
+\item Đăng nhập vào tài khoản GCP đã tạo tại \\
+\texttt{https://console.cloud.google.com/}.
 \end{enumerate}
 
 \section{Cài đặt CLI cho AWS/GCP}
 Việc cài đặt CLI giúp người dùng có thể tương tác với các dịch vụ của AWS/GCP thông qua dòng lệnh. Đồng thời, giúp việc trao đổi, quản lý thư mục và tệp tin dễ dàng hơn.
 \subsection{AWS}
 \begin{enumerate}
-\item Truy cập vào liên kết \texttt{https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html} để cài đặt AWS CLI.
+\item Truy cập vào liên kết \href{https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html}{này} để cài đặt AWS CLI.
 \item Chạy lệnh sau để kiểm tra việc cài đặt CLI đã thành công hay chưa:
 \item \texttt{aws --version}
 \item Đăng nhập vào tài khoản AWS bằng CLI bằng cách chạy lệnh sau:
 \item \texttt{aws configure}
-\item Nhập thông tin cần thiết như \texttt{AWS Access Key ID}, \texttt{AWS Secret Access Key}, \texttt{Default region name}, \texttt{Default output format}.
+\item Nhập thông tin cần thiết như \texttt{Access Key ID}, \texttt{Secret Access Key}, \texttt{Default region name}, \texttt{Default output format}.
 \item Kiểm tra việc đăng nhập thành công bằng cách chạy lệnh sau:
 \item \texttt{aws s3 ls}
 \item Nếu không có lỗi nào xuất hiện, việc đăng nhập đã thành công.
@@ -35,7 +39,8 @@ Việc cài đặt CLI giúp người dùng có thể tương tác với các d�
 
 \subsection{GCP}
 \begin{enumerate}
-\item Truy cập vào liên kết \texttt{https://cloud.google.com/sdk/docs/install} để cài đặt Google Cloud SDK.
+\item Truy cập vào liên kết \\
+\texttt{https://cloud.google.com/sdk/docs/install} để cài đặt Google Cloud SDK.
 \item Chạy lệnh sau để kiểm tra việc cài đặt CLI đã thành công hay chưa:
 \item \texttt{gcloud --version}
 \item Đăng nhập vào tài khoản GCP bằng CLI bằng cách chạy lệnh sau:
@@ -55,12 +60,14 @@ Việc cài đặt CLI giúp người dùng có thể tương tác với các d�
 \item Chọn \texttt{Review and Launch} để xem lại thông tin và chọn \texttt{Launch} để tạo máy chủ.
 \item Chọn key pair đã tạo để mở máy chủ và truy cập vào máy chủ.
 \item {Đăng nhập vào máy chủ bằng cách chạy lệnh sau: \\
-\texttt{ssh ec2-user@địa-chỉ-ip-public-của-ec2 -v -i "đường/dẫn/đến/key.pem"}
-}
+\begin{lstlisting}[language=bash]
+ssh ec2-user@ec2-public-ip -v -i "path/to/authentication/key.pem"
+\end{lstlisting}}
 \end{enumerate}
 \subsection{GCP Computer Engine}
 \begin{enumerate}
-\item Truy cập vào \texttt{https://console.cloud.google.com/compute/instances} để tạo máy chủ GCP.
+\item Truy cập vào \\
+\texttt{https://console.cloud.google.com/compute/instances} \\ để tạo máy chủ GCP.
 \item Chọn \texttt{Create instance} để bắt đầu quá trình tạo máy chủ.
 \item Điền thông tin cần thiết như tên máy chủ, loại máy chủ, cấu hình máy chủ, lưu trữ, bảo mật. (Khuyến khích sử dụng hệ điều hành CentOS)
 \item Chọn \texttt{Create} để tạo máy chủ.
@@ -71,7 +78,7 @@ Việc cài đặt CLI giúp người dùng có thể tương tác với các d�
 \begin{enumerate}
 \item Cập nhật hệ thống bằng cách chạy lệnh sau:
 \item \texttt{sudo yum update}
-\item Theo dõi hướng dẫn tại \texttt{https://docs.docker.com/engine/install/centos/} để cài đặt Docker cho hệ điều hành CentOS.
+\item Theo dõi hướng dẫn tại \href{https://docs.docker.com/engine/install/centos/}{đây} để cài đặt Docker cho hệ điều hành CentOS.
 \item {Đăng nhập vào Docker Hub (hoặc AWS ECR) bằng cách chạy lệnh: \\
     \texttt{docker login}}
 \end{enumerate}

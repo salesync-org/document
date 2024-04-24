@@ -14,26 +14,27 @@ một tên miền đến địa chỉ IP của máy chủ. Để tạo keystore 
     \begin{lstlisting}[language=bash]
     sudo certbot certonly --standalone -d example.com
     \end{lstlisting}
-    \item Keystore certificate sẽ được lưu tại \texttt{/etc/letsencrypt/live/example.com/}
+    \item Keystore certificate sẽ được lưu tại \\
+    \texttt{/etc/letsencrypt/live/example.com/}
     \item Chuyển keystore certificate về thư mục \texttt{/etc/ssl/certs/} bằng cách chạy lệnh sau:
     \item \begin{lstlisting}[language=bash]
-    \item sudo cp /etc/letsencrypt/live/example.com/fullchain.pem /etc/ssl/certs/keycloak.crt
-    \item sudo cp /etc/letsencrypt/live/example.com/privkey.pem /etc/ssl/certs/keycloak.key
-    \item sudo chown keycloak:keycloak /etc/ssl/certs/keycloak.crt
-    \item sudo chown keycloak:keycloak /etc/ssl/certs/keycloak.key
-    \item sudo chmod 600 /etc/ssl/certs/keycloak.crt
-    \item sudo chmod 600 /etc/ssl/certs/keycloak.key
-    \item \end{lstlisting}
+    sudo cp /etc/letsencrypt/live/example.com/fullchain.pem /etc/ssl/certs/keycloak.crt
+    sudo cp /etc/letsencrypt/live/example.com/privkey.pem /etc/ssl/certs/keycloak.key
+    sudo chown keycloak:keycloak /etc/ssl/certs/keycloak.crt
+    sudo chown keycloak:keycloak /etc/ssl/certs/keycloak.key
+    sudo chmod 600 /etc/ssl/certs/keycloak.crt
+    sudo chmod 600 /etc/ssl/certs/keycloak.key
+    \end{lstlisting}
     \item Tạo keystore từ certificate bằng cách chạy lệnh sau:
     \item \begin{lstlisting}[language=bash]
-    \item sudo keytool -importkeystore -srckeystore /etc/ssl/certs/keycloak.jks -destkeystore /etc/ssl/certs/keycloak.p12 -deststoretype PKCS12
-    \item \end{lstlisting}
+    sudo keytool -importkeystore -srckeystore /etc/ssl/certs/keycloak.jks -destkeystore /etc/ssl/certs/keycloak.p12 -deststoretype PKCS12
+    \end{lstlisting}
     \item Chuyển keystore về thư mục \texttt{/etc/keycloak/} bằng cách chạy lệnh sau:
     \item \begin{lstlisting}[language=bash]
-    \item sudo cp /etc/ssl/certs/keycloak.p12 /etc/keycloak/
-    \item sudo chown keycloak:keycloak /etc/keycloak/keycloak.p12
-    \item sudo chmod 600 /etc/keycloak/keycloak.p12
-    \item \end{lstlisting}
+    sudo cp /etc/ssl/certs/keycloak.p12 /etc/keycloak/
+    sudo chown keycloak:keycloak /etc/keycloak/keycloak.p12
+    sudo chmod 600 /etc/keycloak/keycloak.p12
+    \end{lstlisting}
 \end{enumerate}
 
 \section{Chạy Container Keycloak}
@@ -42,19 +43,19 @@ Sau khi đã tạo keystore certificate, ta sẽ chạy container KeyCloak trên
     \item Đăng nhập vào Docker Hub hoặc AWS ECR dựa vào hướng dẫn tương ứng trong \texttt{ReleaseGuide.pdf}.
     \item Tải image của KeyCloak từ Docker Hub hoặc AWS ECR bằng cách chạy lệnh sau:
     \item \begin{lstlisting}[language=bash]
-    \item docker pull tên-repository-keycloak:latest
-    \item \end{lstlisting}
+    docker pull repository-of-keycloak:latest
+    \end{lstlisting}
     \item Build container KeyCloak với những environment variable và volume cần thiết bằng cách chạy lệnh sau:
     \item \begin{lstlisting}[language=bash]
-    \item sudo docker run -d -p 8443:8443 -p 8080:8083 -e  KEYCLOAK_ADMIN=tài-khoản-admin -e KEYCLOAK_ADMIN_PASSWORD=mật-khẩu-admin \
-    \item -e KC_DB=tên-database -e KC_DB_URL=jdbc:postgresql://máy-chủ-database:port-máy-chủ/tên-database \
-    \item -e KC_DB_USERNAME=tài-khoản-database -e KC_DB_PASSWORD=mật-khẩu-database \
-    \item -e KC_HOSTNAME=tên-miền -e KC_HOSTNAME_ADMIN_URL=https://tên-miền \
-    \item -v /etc/keycloak/:/opt/keycloak/conf \
-    \item  mã-repository-của-keycloak start --hostname-debug=true --https-key-store-file=/conf/keycloak.p12 --https-key-store-password=mật-khẩu-cert
-    \item \end{lstlisting}
+    sudo docker run -d -p 8443:8443 -p 8080:8083 -e  KEYCLOAK_ADMIN=admin-account -e KEYCLOAK_ADMIN_PASSWORD=admin-password \
+    \item -e KC_DB=database-name -e KC_DB_URL=jdbc:postgresql://database-host:port/database-name \
+    -e KC_DB_USERNAME=database-account -e KC_DB_PASSWORD=database-password \
+    -e KC_HOSTNAME=host -e KC_HOSTNAME_ADMIN_URL=https://host \
+    -v /etc/keycloak/:/opt/keycloak/conf \
+    repository-of-keycloak start --hostname-debug=true --https-key-store-file=/conf/keycloak.p12 --https-key-store-password=password-cert
+    \end{lstlisting}
 \end{enumerate}
-\textbf{\textit{Chú ý}}: Có thể sẽ cần phải cài đặt thêm ngnix cho máy chủ để truy cập thông qua https đến máy chủ KeyCloak.
+\textbf{\textit{Chú ý}}: Có thể sẽ cần phải cài đặt thêm ngnix cho máy chủ để truy cập thông qua giao thức HTTPS đến máy chủ KeyCloak.
 
 \section{Kiểm tra kết quả}
 Sau khi đã cài đặt thành công, vào trình duyệt và truy cập vào địa chỉ \texttt{https://tên-miền:8443} để truy cập vào giao diện quản trị của KeyCloak.

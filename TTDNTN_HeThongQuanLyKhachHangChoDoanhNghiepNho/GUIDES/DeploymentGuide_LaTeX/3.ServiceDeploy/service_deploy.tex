@@ -1,0 +1,130 @@
+\chapter{Triển khai các service back-end}
+\label{Chapter3}
+Phần này sẽ hướng dẫn cách triển khai tất cả những service phía back-end còn lại như:
+\begin{enumerate}
+    \item Service \texttt{authentication}
+    \item Service \texttt{api-gateway}
+    \item Service \texttt{type-service}
+    \item Service \texttt{record-service}
+    \item Service \texttt{notification-service}
+    \item Service \texttt{service-registry}
+    \item Service \texttt{rabbitmq}
+\end{enumerate}
+
+\section{Tải image từ AWS ECR hoặc Docker Hub}
+\subsection{Đối với RabbitMQ}
+Ta sử dụng cài đặt mặc định của RabbitMQ, có thể được tìm thấy tại \\ \texttt{salesync/back-end/message-queue/docker-compose.yml}.\\
+Hoặc đơn giản hơn, có thể pull RabbitMQ mặc định tại \texttt{rabbitmq:3-management}, cụ thể bằng lệnh:
+\begin{lstlisting}[language=bash]
+    docker pull rabbitmq:3-management
+\end{lstlisting}
+\subsection{Đối với các service còn lại}
+Ta cần tải image từ AWS ECR hoặc Docker Hub, thực hiện các bước tương tự với KeyCloak như sau:
+\begin{enumerate}
+    \item Đăng nhập vào AWS ECR hoặc Docker Hub dựa vào hướng dẫn tương ứng trong \texttt{ReleaseGuide.pdf}.
+    \item Chạy lệnh \texttt{sudo docker pull tên-repository:latest}
+\end{enumerate}
+
+\section{Triển khai service \texttt{authentication}}
+\subsection{Chuẩn bị keystore validation}
+Đây là một file keystore validation được sử dụng để xác thực các request từ service \texttt{api-gateway} đến service \texttt{authentication}, giúp cho việc giao tiếp từ \texttt{api-gateway} đến các service khác được bảo mật.
+Keystore có thể được tạo bởi nhiều cách khác nhau, theo thuật toán RSA256. Kết quả của việc tạo keystore là một file nhị phân có đuôi \texttt{.jks}. Kèm theo đó là một public key có thể được sử dụng tại các service khác để validate.\\
+Xem thêm về hướng dẫn tạo một file keystore bằng \texttt{keytool} tại \href{https://infocenter.sybase.com/help/index.jsp?topic=/com.sybase.infocenter.dc01611.0510/doc/html/emc1296683181727.html}{đây}.
+\subsection{Chạy container service \texttt{authentication}}
+Đối với tất cả các service, ta cần cung cấp các biến môi trường, các thư mục và tệp tin cần thiết để chạy service. Để chạy service \texttt{authentication}, Các biến môi trường sau cần được bổ sung:
+\begin{enumerate}
+    \item \texttt{KEYSTORE\_PATH}: \texttt{/app/keys/auth.jks} -- Vị trí lưu file keystore vừa tạo trong môi trường Docker.
+    \item \texttt{KEYSTORE\_PASSWORD}: Password đã đặt lúc tạo file keystore.
+    \item \texttt{KEYSTORE\_ALIAS}: Keystore alias đã đặt lúc tạo keystore.
+    \item \texttt{KEYCLOAK\_HOST}: Tên miền của KeyCloak server đã tạo ở chương trước.
+    \item \texttt{KEYCLOAK\_ADMIN\_USER}: Tài khoản admin KeyCloak đã đặt ở chương trước.
+    \item \texttt{KEYCLOAK\_ADMIN\_PASSWORD}: Mật khẩu admin KeyCloak đã đặt.
+    \item \texttt{MAIL\_SERVER\_USER}: Tên tài khoản xác thực của mail server (dùng để gửi email xác thực, khuyến khích sử dụng \texttt{AWS SES}).
+    \item \texttt{MAIL\_SERVER\_PASSWORD}: Mật khẩu tài khoản xác thực của mail server.
+    \item \texttt{DB\_HOST}: Tên host của Database Instance đã sử dụng để tạo KeyCloak database.
+    \item \texttt{DB\_PORT}: Port của Database Instance đã sử dụng để tạo KeyCloak database.
+    \item \texttt{DB\_NAME}: Tên của database tạo riêng cho service authentication (nên là database khác với KeyCloak)
+    \item \texttt{DB\_USER}: Tên tài khoản truy cập database
+    \item \texttt{DB\_PASSWORD}: Mật khẩu truy cập database của tài khoản trên.
+\end{enumerate}
+
+Ngoài ra, ta cần phải chuẩn bị file keystore đã tạo ở một vị trí nào đó trên máy chủ, và tạo volume cho container để truy cập file này.
+
+Kết hợp, ta sẽ có một lệnh chạy container như sau:
+\begin{lstlisting}[language=bash]
+    sudo docker run -d -e KEYSTORE_PATH=/app/keys/auth.jks -e KEYSTORE_PASSWORD=example  -e ...
+    -v /path/of/keystore/folder:/app/keys -p 8082:8082 --name the-repository-image-name:latest
+\end{lstlisting}
+
+\section{Chạy container \texttt{RabbitMQ}}
+Để chạy container \texttt{RabbitMQ}, ta cần thực hiện lệnh đơn giản sau: 
+\begin{lstlisting}[language=bash]
+    docker run -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=user -e RABBITMQ_DEFAULT_PASS=password rabbitmq:3-management
+\end{lstlisting}
+Trong đó, ${5672} là port mặc định của RabbitMQ, ${15672} là port để truy cập vào giao diện quản trị của RabbitMQ, ${user} và ${password} là tài khoản và mật khẩu để truy cập vào RabbitMQ.
+
+\section{Chạy service \texttt{service-registry}}
+Chạy Eureka bằng lệnh
+
+\begin{lstlisting}[language=bash]
+    docker run -p 8761:8761 repository-service-registry-name:latest
+\end{lstlisting}
+
+
+\section{Chạy service \texttt{type-service}}
+Tương tự, ta cần các biến môi trường sau:
+\begin{enumerate}
+    \item \texttt{DB\_HOST}: Tên host của Database Instance sẽ được sử dụng cho \\
+    \texttt{type-service}.
+    \item \texttt{DB\_PORT}: Port của Database Instance.
+    \item \texttt{DB\_USER}: Tên tài khoản truy cập database
+    \item \texttt{DB\_PASSWORD}: Mật khẩu truy cập database của tài khoản trên.
+    \item \texttt{RABBITMQ\_HOST}: Tên host của RabbitMQ server.
+    \item \texttt{RABBITMQ\_PORT}: Port của RabbitMQ server.
+    \item \texttt{RABBITMQ\_USER}: Tên tài khoản truy cập server
+    \item \texttt{RABBITMQ\_PASSWORD}: Mật khẩu truy cập của tài khoản trên.
+    \item \texttt{EUREKA\_SERVER\_URL}: Địa chỉ của server Eureka.
+\end{enumerate}
+
+\section{Chạy service \texttt{record-service}}
+Tương tự, ta cần các biến môi trường sau:
+\begin{enumerate}
+    \item \texttt{DB\_HOST}: Tên host của Database Instance sẽ được sử dụng cho \\
+    \texttt{record-service}.
+    \item \texttt{DB\_PORT}: Port của Database Instance.
+    \item \texttt{DB\_USER}: Tên tài khoản truy cập database
+    \item \texttt{DB\_PASSWORD}: Mật khẩu truy cập database của tài khoản trên.
+    \item \texttt{RABBITMQ\_HOST}: Tên host của RabbitMQ server.
+    \item \texttt{RABBITMQ\_PORT}: Port của RabbitMQ server.
+    \item \texttt{RABBITMQ\_USER}: Tên tài khoản truy cập server
+    \item \texttt{RABBITMQ\_PASSWORD}: Mật khẩu truy cập của tài khoản trên.
+    \item \texttt{EUREKA\_SERVER\_URL}: Địa chỉ của server Eureka.
+\end{enumerate}
+
+\section{Chạy service \texttt{notification-service}}
+Tương tự, ta cần các biến môi trường sau:
+\begin{enumerate}
+    \item \texttt{DB\_HOST}: Tên host của Database Instance sẽ được sử dụng cho \\
+    \texttt{notification-service}.
+    \item \texttt{DB\_PORT}: Port của Database Instance.
+    \item \texttt{DB\_USER}: Tên tài khoản truy cập database
+    \item \texttt{DB\_PASSWORD}: Mật khẩu truy cập database của tài khoản trên.
+    \item \texttt{RABBITMQ\_HOST}: Tên host của RabbitMQ server.
+    \item \texttt{RABBITMQ\_PORT}: Port của RabbitMQ server.
+    \item \texttt{RABBITMQ\_USER}: Tên tài khoản truy cập server
+    \item \texttt{RABBITMQ\_PASSWORD}: Mật khẩu truy cập của tài khoản trên.
+\end{enumerate}
+
+\section{Chạy service \texttt{api-gateway}}
+Tương tự, ta cần các biến môi trường sau:
+\begin{enumerate}
+    \item \texttt{AUTH\_SERVER\_URL}: Tên miền của server \texttt{authentication}.
+    \item \texttt{EUREKA\_SERVER\_URL}: Địa chỉ của server Eureka.
+\end{enumerate}
+
+\section{Kiểm tra kết quả}
+Sau khi đã cài đặt thành công, ta đã có được địa chỉ IP, tên miền và các thông tin port cần thiết để truy cập được từ gateway và front-end.
+
+
+
+

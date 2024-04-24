@@ -1,0 +1,64 @@
+\chapter{Triển khai KeyCloak}
+\label{Chapter2}
+Phần này sẽ hướng dẫn cách triển khai một server KeyCloak trên máy chủ CentOS. Đây là một trong những công đoạn phức tạp nhất của việc triển khai.
+
+\section{Tạo keystore certificate}
+Để KeyCloak có thể được chạy trong môi trường production. KeyCloak cần được kết nối và giao tiếp thông qua phương thức HTTPS. Do đó, ta cần tạo một keystore certificate trỏ từ
+một tên miền đến địa chỉ IP của máy chủ. Để tạo keystore certificate, ta cần thực hiện các bước sau:
+\begin{enumerate}
+    \item Cài đặt \texttt{certbot} bằng cách chạy lệnh sau:
+    \begin{lstlisting}[language=bash]
+    sudo yum install certbot
+    \end{lstlisting}
+    \item Chạy lệnh sau để tạo keystore certificate:
+    \begin{lstlisting}[language=bash]
+    sudo certbot certonly --standalone -d example.com
+    \end{lstlisting}
+    \item Keystore certificate sẽ được lưu tại \texttt{/etc/letsencrypt/live/example.com/}
+    \item Chuyển keystore certificate về thư mục \texttt{/etc/ssl/certs/} bằng cách chạy lệnh sau:
+    \item \begin{lstlisting}[language=bash]
+    \item sudo cp /etc/letsencrypt/live/example.com/fullchain.pem /etc/ssl/certs/keycloak.crt
+    \item sudo cp /etc/letsencrypt/live/example.com/privkey.pem /etc/ssl/certs/keycloak.key
+    \item sudo chown keycloak:keycloak /etc/ssl/certs/keycloak.crt
+    \item sudo chown keycloak:keycloak /etc/ssl/certs/keycloak.key
+    \item sudo chmod 600 /etc/ssl/certs/keycloak.crt
+    \item sudo chmod 600 /etc/ssl/certs/keycloak.key
+    \item \end{lstlisting}
+    \item Tạo keystore từ certificate bằng cách chạy lệnh sau:
+    \item \begin{lstlisting}[language=bash]
+    \item sudo keytool -importkeystore -srckeystore /etc/ssl/certs/keycloak.jks -destkeystore /etc/ssl/certs/keycloak.p12 -deststoretype PKCS12
+    \item \end{lstlisting}
+    \item Chuyển keystore về thư mục \texttt{/etc/keycloak/} bằng cách chạy lệnh sau:
+    \item \begin{lstlisting}[language=bash]
+    \item sudo cp /etc/ssl/certs/keycloak.p12 /etc/keycloak/
+    \item sudo chown keycloak:keycloak /etc/keycloak/keycloak.p12
+    \item sudo chmod 600 /etc/keycloak/keycloak.p12
+    \item \end{lstlisting}
+\end{enumerate}
+
+\section{Chạy Container Keycloak}
+Sau khi đã tạo keystore certificate, ta sẽ chạy container KeyCloak trên máy chủ.Việc chạy KeyCloak đòi hỏi một số biến môi trường nhất định  Để chạy container KeyCloak, ta cần thực hiện các bước sau:
+\begin{enumerate}
+    \item Đăng nhập vào Docker Hub hoặc AWS ECR dựa vào hướng dẫn tương ứng trong \texttt{ReleaseGuide.pdf}.
+    \item Tải image của KeyCloak từ Docker Hub hoặc AWS ECR bằng cách chạy lệnh sau:
+    \item \begin{lstlisting}[language=bash]
+    \item docker pull tên-repository-keycloak:latest
+    \item \end{lstlisting}
+    \item Build container KeyCloak với những environment variable và volume cần thiết bằng cách chạy lệnh sau:
+    \item \begin{lstlisting}[language=bash]
+    \item sudo docker run -d -p 8443:8443 -p 8080:8083 -e  KEYCLOAK_ADMIN=tài-khoản-admin -e KEYCLOAK_ADMIN_PASSWORD=mật-khẩu-admin \
+    \item -e KC_DB=tên-database -e KC_DB_URL=jdbc:postgresql://máy-chủ-database:port-máy-chủ/tên-database \
+    \item -e KC_DB_USERNAME=tài-khoản-database -e KC_DB_PASSWORD=mật-khẩu-database \
+    \item -e KC_HOSTNAME=tên-miền -e KC_HOSTNAME_ADMIN_URL=https://tên-miền \
+    \item -v /etc/keycloak/:/opt/keycloak/conf \
+    \item  mã-repository-của-keycloak start --hostname-debug=true --https-key-store-file=/conf/keycloak.p12 --https-key-store-password=mật-khẩu-cert
+    \item \end{lstlisting}
+\end{enumerate}
+\textbf{\textit{Chú ý}}: Có thể sẽ cần phải cài đặt thêm ngnix cho máy chủ để truy cập thông qua https đến máy chủ KeyCloak.
+
+\section{Kiểm tra kết quả}
+Sau khi đã cài đặt thành công, vào trình duyệt và truy cập vào địa chỉ \texttt{https://tên-miền:8443} để truy cập vào giao diện quản trị của KeyCloak.
+
+
+
+

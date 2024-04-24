@@ -1,0 +1,88 @@
+\chapter{Tạo tài khoản Cloud Service}
+\label{Chapter1}
+
+\section{Tạo tài khoản và đăng nhập AWS/GCP}
+\subsection{AWS -- Amazon Web Services}
+\begin{enumerate}
+\item Truy cập vào liên kết \texttt{https://portal.aws.amazon.com/billing/signup?} để đến trang đăng kí tài khoản của AWS.
+Thực hiện theo hướng dẫn của trang web để tạo tài khoản.
+
+\item Đăng nhập vào tài khoản AWS đã tạo tại \texttt{https://console.aws.amazon.com/console/home}.
+\end{enumerate}
+
+\subsection{GCP -- Google Cloud Platform}
+\begin{enumerate}
+\item Truy cập vào liên kết \texttt{https://cloud.google.com/} để đến trang chính thức của GCP.
+\item Chọn \texttt{Get started for free} để tạo tài khoản mới.
+\item Điền thông tin cần thiết và thực hiện theo hướng dẫn của trang web để tạo tài khoản.
+\item Đăng nhập vào tài khoản GCP đã tạo tại \texttt{https://console.cloud.google.com/}.
+\end{enumerate}
+
+\section{Cài đặt CLI cho AWS/GCP}
+Việc cài đặt CLI giúp người dùng có thể tương tác với các dịch vụ của AWS/GCP thông qua dòng lệnh. Đồng thời, giúp việc trao đổi, quản lý thư mục và tệp tin dễ dàng hơn.
+\subsection{AWS}
+\begin{enumerate}
+\item Truy cập vào liên kết \texttt{https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html} để cài đặt AWS CLI.
+\item Chạy lệnh sau để kiểm tra việc cài đặt CLI đã thành công hay chưa:
+\item \texttt{aws --version}
+\item Đăng nhập vào tài khoản AWS bằng CLI bằng cách chạy lệnh sau:
+\item \texttt{aws configure}
+\item Nhập thông tin cần thiết như \texttt{AWS Access Key ID}, \texttt{AWS Secret Access Key}, \texttt{Default region name}, \texttt{Default output format}.
+\item Kiểm tra việc đăng nhập thành công bằng cách chạy lệnh sau:
+\item \texttt{aws s3 ls}
+\item Nếu không có lỗi nào xuất hiện, việc đăng nhập đã thành công.
+\end{enumerate}
+
+\subsection{GCP}
+\begin{enumerate}
+\item Truy cập vào liên kết \texttt{https://cloud.google.com/sdk/docs/install} để cài đặt Google Cloud SDK.
+\item Chạy lệnh sau để kiểm tra việc cài đặt CLI đã thành công hay chưa:
+\item \texttt{gcloud --version}
+\item Đăng nhập vào tài khoản GCP bằng CLI bằng cách chạy lệnh sau:
+\item \texttt{gcloud auth login}
+\item Nhập thông tin cần thiết để đăng nhập vào tài khoản GCP.
+\item Kiểm tra việc đăng nhập thành công bằng cách chạy lệnh sau:
+\item \texttt{gcloud projects list}
+\item Nếu không có lỗi nào xuất hiện, việc đăng nhập đã thành công.
+\end{enumerate}
+
+\section{Tạo máy chủ AWS EC2 hoặc GPC Computer Engine}
+\subsection{AWS EC2}
+\begin{enumerate}
+\item Truy cập vào \texttt{https://console.aws.amazon.com/ec2/} để tạo máy chủ EC2.
+\item Chọn \texttt{Launch instance} để bắt đầu quá trình tạo máy chủ.
+\item Chọn loại máy chủ, cấu hình máy chủ, lưu trữ, bảo mật, và tạo key pair để truy cập máy chủ từ CLI. (Khuyến khích sử dụng hệ điều hành CentOS)
+\item Chọn \texttt{Review and Launch} để xem lại thông tin và chọn \texttt{Launch} để tạo máy chủ.
+\item Chọn key pair đã tạo để mở máy chủ và truy cập vào máy chủ.
+\item {Đăng nhập vào máy chủ bằng cách chạy lệnh sau: \\
+\texttt{ssh ec2-user@địa-chỉ-ip-public-của-ec2 -v -i "đường/dẫn/đến/key.pem"}
+}
+\end{enumerate}
+\subsection{GCP Computer Engine}
+\begin{enumerate}
+\item Truy cập vào \texttt{https://console.cloud.google.com/compute/instances} để tạo máy chủ GCP.
+\item Chọn \texttt{Create instance} để bắt đầu quá trình tạo máy chủ.
+\item Điền thông tin cần thiết như tên máy chủ, loại máy chủ, cấu hình máy chủ, lưu trữ, bảo mật. (Khuyến khích sử dụng hệ điều hành CentOS)
+\item Chọn \texttt{Create} để tạo máy chủ.
+\item Chọn \texttt{SSH} để mở máy chủ và truy cập vào máy chủ.
+\end{enumerate}
+
+\subsection{Cấu hình cơ bản cho máy chủ CentOS}
+\begin{enumerate}
+\item Cập nhật hệ thống bằng cách chạy lệnh sau:
+\item \texttt{sudo yum update}
+\item Theo dõi hướng dẫn tại \texttt{https://docs.docker.com/engine/install/centos/} để cài đặt Docker cho hệ điều hành CentOS.
+\item {Đăng nhập vào Docker Hub (hoặc AWS ECR) bằng cách chạy lệnh: \\
+    \texttt{docker login}}
+\end{enumerate}
+\textbf{\textit{Chú ý:}} Có thể sẽ phải thay đổi cấu hình bảo mật của máy chủ để cho phép truy cập từ xa. (VPC Network Inbounce và Outbounce Rules đối với AWS, Firewall Rules đối với GCP)
+
+\section{RDS -- Relational Database Service}
+\subsection{AWS RDS}
+\begin{enumerate}
+\item Truy cập vào \texttt{https://console.aws.amazon.com/rds/} để tạo RDS.
+\item Chọn \texttt{Create database} để bắt đầu quá trình tạo RDS.
+\item Chọn loại database cần sử dụng, cấu hình database, bảo mật, và tạo database. (Khuyến khích sử dụng PostgreSQL)
+\item Cài đặt network để cho phép database được kết nối đến từ xa bởi nhiều máy chủ khác nhau.
+\end{enumerate}
+

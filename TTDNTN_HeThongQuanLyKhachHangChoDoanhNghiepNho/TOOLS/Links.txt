@@ -1,0 +1,6 @@
+STT       Tên Phần Mềm                    Mục đích                        Link Download             
+1  Visual Studio Code                  Soạn thảo mã nguồn              https://code.visualstudio.com/download
+2. JetBrains IntelliJ Ultimate         Soạn thảo + biên dịch Java      https://www.jetbrains.com/idea/download/
+3. Google Chrome                       Trình duyệt chạy frontend       https://www.google.com/chrome/
+4. Postman                             Kiểm thử API                    https://www.postman.com/downloads/
+5. Adobe Illustrator                   Tạo hình ảnh cho ứng dụng       https://creativecloud.adobe.com/apps/download/creative-cloud
